@@ -11,7 +11,6 @@
 #include <cassert>  // assert
 #include <iostream> // endl, istream, ostream
 
-#include "Collatz.h"
 
 // ------------
 // Global
@@ -30,6 +29,40 @@ bool collatz_read (std::istream& r, int& i, int& j) {
 	assert(i > 0);
 	assert(j > 0);
 	return true;}
+
+// ------------
+// collatz_cycle_length
+// ------------
+
+int collatz_cycle_length(int n) {
+	int previous_cycle;
+	int x;
+
+	if (n == 1)
+		return 1;
+
+	// even: n / 2, check if value is in cache, else call recursively,
+	if ( (n % 2) == 0) {
+		x = n /2;
+		previous_cycle = cycle_cache[x];
+		if (previous_cycle == 0)
+			return collatz_cycle_length(x) + 1;
+		else
+			return previous_cycle + 1;
+	}
+
+	// odd: n * 3 + 1, since this will be even, skip another step by / 2
+	// check if value is in cache, else call recursively
+	else {
+		x = (3 * n + 1) / 2;
+		previous_cycle = cycle_cache[x];
+		if (previous_cycle == 0)
+			return collatz_cycle_length(x) + 2;
+		else
+			return previous_cycle + 2;
+	}
+}
+
 
 // ------------
 // collatz_eval
@@ -70,39 +103,6 @@ int collatz_eval (int i, int j) {
 	//assert(v > 0);
 	return max_cycle_num;}
 
-// ------------
-// collatz_eval
-// ------------
-
-int collatz_cycle_length(int n) {
-	int previous_cycle;
-	int x;
-
-	if (n == 1)
-		return 1;
-
-	// even: n / 2, check if value is in cache, else call recursively,
-	if ( (n % 2) == 0) {
-		x = n /2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
-			return collatz_cycle_length(x) + 1;
-		else
-			return previous_cycle + 1;
-	}
-
-	// odd: n * 3 + 1, since this will be even, skip another step by / 2
-	// check if value is in cache, else call recursively
-	else {
-		x = (3 * n + 1) / 2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
-			return collatz_cycle_length(x) + 2;
-		else
-			return previous_cycle + 2;
-	}
-}
-
 // -------------
 // collatz_print
 // -------------
@@ -120,3 +120,36 @@ void collatz_solve (std::istream& r, std::ostream& w) {
 	while (collatz_read(r, i, j)) {
 		const int v = collatz_eval(i, j);
 		collatz_print(w, i, j, v);}}
+
+// -------------------------------
+// projects/collatz/RunCollatz.c++
+// Copyright (C) 2013
+// Glenn P. Downing
+// -------------------------------
+
+/*
+To run the program:
+    % g++ -pedantic -std=c++0x -Wall Collatz.c++ RunCollatz.c++ -o RunCollatz
+    % valgrind RunCollatz < RunCollatz.in > RunCollatz.out
+
+To configure Doxygen:
+    % doxygen -g
+That creates the file "Doxyfile".
+Make the following edits:
+    EXTRACT_ALL            = YES
+    EXTRACT_PRIVATE        = YES
+    EXTRACT_STATIC         = YES
+    GENERATE_LATEX         = NO
+
+To document the program:
+    % doxygen Doxyfile
+*/
+
+// ----
+// main
+// ----
+
+int main () {
+    using namespace std;
+    collatz_solve(cin, cout);
+    return 0;}
