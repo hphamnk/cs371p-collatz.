@@ -15,7 +15,8 @@
 // ------------
 // Global
 // ------------
-int cycle_cache[100000000] = {0};
+#define CACHE_SIZE 1000001
+int cycle_cache[CACHE_SIZE] = {0};
 
 // ------------
 // collatz_read
@@ -44,22 +45,32 @@ int collatz_cycle_length(int n) {
 	// even: n / 2, check if value is in cache, else call recursively,
 	if ( (n % 2) == 0) {
 		x = n /2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
-			return collatz_cycle_length(x) + 1;
+		if (x <= CACHE_SIZE) 
+		{
+			previous_cycle = cycle_cache[x];
+			if (previous_cycle == 0)
+				return collatz_cycle_length(x) + 1;
+			else
+				return previous_cycle + 1;
+		}
 		else
-			return previous_cycle + 1;
+			return collatz_cycle_length(x) + 1;
 	}
 
 	// odd: n * 3 + 1, since this will be even, skip another step by / 2
 	// check if value is in cache, else call recursively
 	else {
 		x = (3 * n + 1) / 2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
+		if (x <= CACHE_SIZE) 
+		{
+			previous_cycle = cycle_cache[x];
+			if (previous_cycle == 0)
+				return collatz_cycle_length(x) + 2;
+			else
+				return previous_cycle + 2;
+		}
+		else 
 			return collatz_cycle_length(x) + 2;
-		else
-			return previous_cycle + 2;
 	}
 }
 
