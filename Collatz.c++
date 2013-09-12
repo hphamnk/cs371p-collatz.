@@ -80,11 +80,13 @@ int collatz_cycle_length(int n) {
 // collatz_eval
 // ------------
 
-int collatz_eval (int i, int j) {
+int collatz_eval (int i, int j) 
+{
 	// <your code>
 	cycle_cache[1] = 1;
 	int temp;
 	int max_cycle_num = 1;
+
 
 	// swap 2 inputs if second input is smaller than first input
 	if (i > j)
@@ -93,6 +95,7 @@ int collatz_eval (int i, int j) {
 		i = j;
 		j = temp;
 	}
+	assert (i <= j);
 
 	for ( int x = i; x <= j; x++) 
 	{
@@ -105,16 +108,19 @@ int collatz_eval (int i, int j) {
 			cycle_cache[x] = collatz_cycle_length(x);
 			current_cycle_num = cycle_cache[x];
 		}
+		assert (current_cycle_num > 0);
 
 		// check if current_cycle_num > max_cycle_num
         if (current_cycle_num > max_cycle_num)
             max_cycle_num = current_cycle_num;
+        assert (max_cycle_num >= current_cycle_num);
 
 	}
 
 	//int v = collatz_cycle_length(j);
-	//assert(v > 0);
-	return max_cycle_num;}
+	assert (max_cycle_num > 0);
+	return max_cycle_num;
+}
 
 // -------------
 // collatz_print
