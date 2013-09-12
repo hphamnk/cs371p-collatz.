@@ -16,7 +16,8 @@
 // ------------
 // Global
 // ------------
-int cycle_cache[100000000] = {0};
+#define CACHE_SIZE 1000001
+int cycle_cache[CACHE_SIZE] = {0};
 
 // ------------
 // collatz_read
@@ -32,6 +33,50 @@ bool collatz_read (std::istream& r, int& i, int& j) {
 	return true;}
 
 // ------------
+// collatz_cycle_length
+// ------------
+
+int collatz_cycle_length(int n) {
+	int previous_cycle;
+	int x;
+
+	if (n == 1)
+		return 1;
+
+	// even: n / 2, check if value is in cache and less than CACHE_SIZE, else call recursively,
+	if ( (n % 2) == 0) {
+		x = n /2;
+		if (x <= CACHE_SIZE) 
+		{
+			previous_cycle = cycle_cache[x];
+			if (previous_cycle == 0)
+				return collatz_cycle_length(x) + 1;
+			else
+				return previous_cycle + 1;
+		}
+		else
+			return collatz_cycle_length(x) + 1;
+	}
+
+	// odd: n * 3 + 1, since this will be even, skip another step by / 2
+	// check if value is in cache and less than CACHE_SIZE, else call recursively
+	else {
+		x = (3 * n + 1) / 2;
+		if (x <= CACHE_SIZE) 
+		{
+			previous_cycle = cycle_cache[x];
+			if (previous_cycle == 0)
+				return collatz_cycle_length(x) + 2;
+			else
+				return previous_cycle + 2;
+		}
+		else 
+			return collatz_cycle_length(x) + 2;
+	}
+}
+
+
+// ------------
 // collatz_eval
 // ------------
 
@@ -39,8 +84,9 @@ int collatz_eval (int i, int j) {
 	// <your code>
 	cycle_cache[1] = 1;
 	int temp;
-	int max_cycle_num = 0;
+	int max_cycle_num = 1;
 
+	// swap 2 inputs if second input is smaller than first input
 	if (i > j)
 	{
 		temp = i;
@@ -69,39 +115,6 @@ int collatz_eval (int i, int j) {
 	//int v = collatz_cycle_length(j);
 	//assert(v > 0);
 	return max_cycle_num;}
-
-// ------------
-// collatz_eval
-// ------------
-
-int collatz_cycle_length(int n) {
-	int previous_cycle;
-	int x;
-
-	if (n == 1)
-		return 1;
-
-	// even: n / 2, check if value is in cache, else call recursively,
-	if ( (n % 2) == 0) {
-		x = n /2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
-			return collatz_cycle_length(x) + 1;
-		else
-			return previous_cycle + 1;
-	}
-
-	// odd: n * 3 + 1, since this will be even, skip another step by / 2
-	// check if value is in cache, else call recursively
-	else {
-		x = (3 * n + 1) / 2;
-		previous_cycle = cycle_cache[x];
-		if (previous_cycle == 0)
-			return collatz_cycle_length(x) + 2;
-		else
-			return previous_cycle + 2;
-	}
-}
 
 // -------------
 // collatz_print

@@ -83,8 +83,9 @@ int collatz_eval (int i, int j) {
 	// <your code>
 	cycle_cache[1] = 1;
 	int temp;
-	int max_cycle_num = 0;
+	int max_cycle_num = 1;
 
+	// swap 2 inputs if second input is smaller than first input
 	if (i > j)
 	{
 		temp = i;
@@ -131,6 +132,7 @@ void collatz_solve (std::istream& r, std::ostream& w) {
 	while (collatz_read(r, i, j)) {
 		const int v = collatz_eval(i, j);
 		collatz_print(w, i, j, v);}}
+
 
 // -------------------------------
 // projects/collatz/RunCollatz.c++
