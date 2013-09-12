@@ -31,13 +31,13 @@ bool collatz_read (std::istream&, int&, int&);
 // ------------
 
 /**
+ * swap i and j if j is smaller than i\n
+ * for loop from i to j\n
+ *    if cycle for an element is not in cache, call collatz_cycle_length and save it to cache\n 
+ *    if cycle is in cache, save to current_cycle_num\n
+ *    compare current_cycle_num to max_cycle_num, if current > max, set max to current
  * @param i the beginning of the range, inclusive
  * @param j the end       of the range, inclusive
- * @param swap i and j if j is smaller than i
- * @param for loop from i to j
- * @param 	if cycle for an element is not in cache, call collatz_cycle_length and save it to cache 
- * @param 	if cycle is in cache, save to current_cycle_num
- * @param	compare current_cycle_num to max_cycle_num, if current > max, set max to current
  * @return the max cycle length in the range [i, j]
  */
 int collatz_eval (int, int);
@@ -47,15 +47,16 @@ int collatz_eval (int, int);
 // -------------
 
 /**
- * read 1 int into n
- * @param finds cycle length of n
- * @param if n is 1, return 1
- * @param if n is even, do n/2
- * @param 	if n/2 is in cache and smaller than 100001, get the cycle length from cache
- * @param 	else call collatz_cycle_length recursively and +1 to that
- * @param if n is odd, do (3*n +1) /2
- * @param 	if (3*n +1) /2 is in cache and smaller than 100001, get the cycle length from cache
- * @param 	else call collatz_cycle_length recursively and +2 to that
+ * finds cycle length of n\n
+ * if n is 1, return 1\n
+ * if n is even, do n/2\n
+ *    if n/2 is in cache and smaller than 100001, get the cycle length from cache\n
+ *    else call collatz_cycle_length recursively and +1 to that\n
+ * if n is odd, do (3*n +1) /2\n
+ *    if (3*n +1) /2 is in cache and smaller than 100001, get the cycle length from cache\n
+ *    else call collatz_cycle_length recursively and +2 to that\n
+ * @param n an int 
+ * @return the cycle length of n
  */
 int collatz_cycle_length (int);
 

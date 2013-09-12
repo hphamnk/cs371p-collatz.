@@ -16,7 +16,7 @@
 // ------------
 // Global
 // ------------
-#define CACHE_SIZE 1000001
+#define CACHE_SIZE 1000000
 int cycle_cache[CACHE_SIZE] = {0};
 
 // ------------
