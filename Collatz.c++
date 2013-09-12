@@ -10,7 +10,6 @@
 
 #include <cassert>  // assert
 #include <iostream> // endl, istream, ostream
-
 #include "Collatz.h"
 
 // ------------
@@ -46,7 +45,7 @@ int collatz_cycle_length(int n) {
 	// even: n / 2, check if value is in cache and less than CACHE_SIZE, else call recursively,
 	if ( (n % 2) == 0) {
 		x = n /2;
-		if (x <= CACHE_SIZE) 
+		if (x < CACHE_SIZE) 
 		{
 			previous_cycle = cycle_cache[x];
 			if (previous_cycle == 0)
@@ -62,7 +61,7 @@ int collatz_cycle_length(int n) {
 	// check if value is in cache and less than CACHE_SIZE, else call recursively
 	else {
 		x = (3 * n + 1) / 2;
-		if (x <= CACHE_SIZE) 
+		if (x < CACHE_SIZE) 
 		{
 			previous_cycle = cycle_cache[x];
 			if (previous_cycle == 0)
@@ -86,7 +85,6 @@ int collatz_eval (int i, int j)
 	cycle_cache[1] = 1;
 	int temp;
 	int max_cycle_num = 1;
-
 
 	// swap 2 inputs if second input is smaller than first input
 	if (i > j)
@@ -117,7 +115,6 @@ int collatz_eval (int i, int j)
 
 	}
 
-	//int v = collatz_cycle_length(j);
 	assert (max_cycle_num > 0);
 	return max_cycle_num;
 }
